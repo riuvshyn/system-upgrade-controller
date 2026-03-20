@@ -122,9 +122,11 @@ func (ctl *Controller) handleJobs(ctx context.Context) error {
 				} else {
 					ctl.recorder.Eventf(plan, corev1.EventTypeNormal, "JobComplete", "Job completed on Node %s", node.Name)
 					node.Labels[planLabel] = planHash
-					// label the node with the version that was applied,
-					// this can be used by plan selectors to avoid selecting nodes that are already using desired version
-					node.Labels[upgradeapi.LabelVersion] = plan.Status.LatestVersion
+					if plan.Spec.EnableNodeVersionLabel {
+						// label the node with the version that was applied,
+						// this can be used by plan selectors to avoid selecting nodes that are already using desired version
+						node.Labels[upgradeapi.LabelVersion] = plan.Status.LatestVersion
+					}
 				}
 				// mark the node as schedulable even if the delay has not elapsed, so that
 				// workloads can resume scheduling.

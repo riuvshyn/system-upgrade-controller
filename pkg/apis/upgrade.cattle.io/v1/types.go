@@ -85,6 +85,9 @@ type PlanSpec struct {
 	PostCompleteDelay *metav1.Duration `json:"postCompleteDelay,omitempty"`
 	// Priority Class Name of Job, if specified.
 	PriorityClassName string `json:"priorityClassName,omitempty"`
+	// If true, the upgrade.cattle.io/version label will be applied to nodes processed by this plan,
+	// using the value from spec.version. If not set or false, the label will not be created.
+	EnableNodeVersionLabel bool `json:"enableNodeVersionLabel,omitempty"`
 }
 
 // PlanStatus represents the resulting state from processing Plan events.
